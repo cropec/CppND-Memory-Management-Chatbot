@@ -44,7 +44,72 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+ChatBot::ChatBot(const ChatBot &other)
+{
+    std::cout << "ChatBot Copy Constructor" << std::endl;
 
+    _image = nullptr;
+    _chatLogic = nullptr;
+    _rootNode = nullptr;
+
+    //TODO: Think about it
+    // if(this != &other)
+    // {
+    //     _image = other.image;
+    //     _chatLogic = other._chatLogic;
+    //     _rootNode = other._rootNode;
+
+    //     other._image = nullptr;
+    //     other._chatLogic = nullptr;
+    //     other._rootNode = nullptr;
+    // }
+
+}
+
+ChatBot::ChatBot(ChatBot &&other)
+{
+     std::cout << "ChatBot Move Constructor" << std::endl;
+
+    _image = other._image;
+    _chatLogic = other._chatLogic;
+    _rootNode = other._rootNode;
+
+    other._image = nullptr;
+    other._chatLogic = nullptr;
+    other._rootNode = nullptr;
+    
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &rhs)
+{
+     std::cout << "ChatBot assign op" << std::endl;
+
+}
+
+ChatBot& ChatBot::operator= (ChatBot &&rhs)
+{
+     std::cout << "ChatBot move op" << std::endl;
+
+     
+    if(this != &rhs)
+    {
+        if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
+        {
+        delete _image;
+        _image = NULL;
+        }
+
+        _image = rhs._image;
+        _chatLogic = rhs._chatLogic;
+        _rootNode = rhs._rootNode;
+
+        rhs._image = nullptr;
+        rhs._chatLogic = nullptr;
+        rhs._rootNode = nullptr;
+    }
+
+    return *this;
+}
 ////
 //// EOF STUDENT CODE
 
