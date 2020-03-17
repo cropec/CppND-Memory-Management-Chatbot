@@ -49,21 +49,10 @@ ChatBot::ChatBot(const ChatBot &other)
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
     _image = nullptr;
-    _chatLogic = nullptr;
-    _rootNode = nullptr;
-
-    //TODO: Think about it
-    // if(this != &other)
-    // {
-    //     _image = other.image;
-    //     _chatLogic = other._chatLogic;
-    //     _rootNode = other._rootNode;
-
-    //     other._image = nullptr;
-    //     other._chatLogic = nullptr;
-    //     other._rootNode = nullptr;
-    // }
-
+    // _image = other._image;  //TODO: Only if _image is a shared pointer
+    _chatLogic = other._chatLogic;
+    _rootNode = other._rootNode;
+    _currentNode = other._currentNode;
 }
 
 ChatBot::ChatBot(ChatBot &&other)
@@ -73,6 +62,7 @@ ChatBot::ChatBot(ChatBot &&other)
     _image = other._image;
     _chatLogic = other._chatLogic;
     _rootNode = other._rootNode;
+    _currentNode = other._currentNode;
 
     other._image = nullptr;
     other._chatLogic = nullptr;
@@ -84,6 +74,15 @@ ChatBot& ChatBot::operator=(const ChatBot &rhs)
 {
      std::cout << "ChatBot assign op" << std::endl;
 
+    if(this != &rhs)
+    {
+        _image = nullptr;
+        // _image = rhs._image;  //TODO: Only if _image is a shared pointer
+        _chatLogic = rhs._chatLogic;
+        _rootNode = rhs._rootNode;
+        _currentNode = rhs._currentNode;
+    }
+
 }
 
 ChatBot& ChatBot::operator= (ChatBot &&rhs)
@@ -93,12 +92,6 @@ ChatBot& ChatBot::operator= (ChatBot &&rhs)
      
     if(this != &rhs)
     {
-        if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
-        {
-        delete _image;
-        _image = NULL;
-        }
-
         _image = rhs._image;
         _chatLogic = rhs._chatLogic;
         _rootNode = rhs._rootNode;
