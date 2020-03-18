@@ -48,8 +48,7 @@ ChatBot::ChatBot(const ChatBot &other)
 {
     std::cout << "ChatBot Copy Constructor" << std::endl;
 
-    _image = nullptr;
-    // _image = other._image;  //TODO: Only if _image is a shared pointer
+    _image = new wxBitmap(*other._image);
     _chatLogic = other._chatLogic;
     _rootNode = other._rootNode;
     _currentNode = other._currentNode;
@@ -64,10 +63,10 @@ ChatBot::ChatBot(ChatBot &&other)
     _rootNode = other._rootNode;
     _currentNode = other._currentNode;
 
-    other._image = nullptr;
-    other._chatLogic = nullptr;
+    other._image = NULL;
+    other._chatLogic = nullptr; //std::move instead?
     other._rootNode = nullptr;
-    
+    other._currentNode = nullptr;
 }
 
 ChatBot& ChatBot::operator=(const ChatBot &rhs)
@@ -76,8 +75,8 @@ ChatBot& ChatBot::operator=(const ChatBot &rhs)
 
     if(this != &rhs)
     {
-        _image = nullptr;
-        // _image = rhs._image;  //TODO: Only if _image is a shared pointer
+        delete _image;
+        _image = new wxBitmap(*rhs._image);
         _chatLogic = rhs._chatLogic;
         _rootNode = rhs._rootNode;
         _currentNode = rhs._currentNode;
@@ -87,18 +86,21 @@ ChatBot& ChatBot::operator=(const ChatBot &rhs)
 
 ChatBot& ChatBot::operator= (ChatBot &&rhs)
 {
-     std::cout << "ChatBot move op" << std::endl;
+     std::cout << "ChatBot Move Assignment Operator" << std::endl;
 
      
     if(this != &rhs)
     {
+        delete _image;
         _image = rhs._image;
         _chatLogic = rhs._chatLogic;
         _rootNode = rhs._rootNode;
+        _currentNode = rhs._currentNode;
 
-        rhs._image = nullptr;
+        rhs._image = NULL;
         rhs._chatLogic = nullptr;
         rhs._rootNode = nullptr;
+        rhs._currentNode = nullptr;
     }
 
     return *this;
